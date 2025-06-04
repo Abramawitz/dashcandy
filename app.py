@@ -40,7 +40,7 @@ def home():
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>AI Image Generator</title>
+    <title>AI Slatelet Generator</title>
     <style>
         body {{
             margin: 0;
@@ -152,7 +152,7 @@ def home():
 </head>
 <body>
     <div class="container">
-        <h1>AI Image Generator</h1>
+        <h1>AI Slatelet Generator</h1>
         <div class="content">
             <form method="POST" onsubmit="showSpinner()">
                 <input name="prompt" placeholder="Describe an image..." required />
