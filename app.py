@@ -24,7 +24,7 @@ def home():
         )
 
         prompt = base_style + user_input
-        display_prompt = prompt  # For displaying on the page
+        display_prompt = user_input  # For displaying on the page
 
         try:
             response = client.images.generate(
