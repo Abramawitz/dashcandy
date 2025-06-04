@@ -21,6 +21,9 @@ def home():
             "A flat-color cartoon illustration. Use a maximum of 6 solid colors. "
             "White background only. No gradients. Sharp, aliased edges. "
             "High contrast. Resolution: 512x512 pixels. "
+            "All colors must be directly touching another color" 
+            "the image must be overlaid on a shape (polygon or circle)"
+            
         )
 
         prompt = base_style + user_input
