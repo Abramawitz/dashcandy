@@ -22,7 +22,7 @@ def home():
             "White background only. No gradients. Sharp, aliased edges. "
             "High contrast. Resolution: 512x512 pixels. "
             "All colors must be directly touching another color" 
-            "the image must be overlaid on a shape (polygon or circle)"
+            "the image must be a singular image and centered on the background"
             
         )
 
