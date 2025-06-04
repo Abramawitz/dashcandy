@@ -8,30 +8,32 @@ client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
+    image_url = ""
+    prompt = ""
+
     if request.method == 'POST':
-        prompt = request.form.get('prompt', 'No prompt provided')
-
+        prompt = request.form.get('prompt', 'A fantasy landscape')
         try:
-            response = client.chat.completions.create(
-                model="gpt-3.5-turbo",
-                messages=[{"role": "user", "content": prompt}]
+            response = client.images.generate(
+                model="dall-e-3",
+                prompt=prompt,
+                size="1024x1024",
+                quality="standard",
+                n=1
             )
-            reply = response.choices[0].message.content
+            image_url = response.data[0].url
         except Exception as e:
-            reply = f"Error: {str(e)}"
+            image_url = ""
+            prompt = f"Error: {str(e)}"
 
-        return (
-            f"<h1>Prompt:</h1><p>{prompt}</p>"
-            f"<h2>ChatGPT says:</h2><p>{reply}</p>"
-            f'<a href="/">Try another</a>'
-        )
-
-    return (
-        '<form method="POST">'
-        '<input name="prompt" placeholder="Ask ChatGPT" style="width: 300px;" />'
-        '<button type="submit">Submit</button>'
-        '</form>'
-    )
+    return f'''
+        <form method="POST">
+            <input name="prompt" placeholder="Describe an image" style="width: 300px;" />
+            <button type="submit">Generate Image</button>
+        </form>
+        <h2>Prompt:</h2><p>{prompt}</p>
+        {'<img src="' + image_url + '" style="max-width: 500px;"/>' if image_url else ''}
+    '''
 
 if __name__ == '__main__':
     app.run()
