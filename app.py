@@ -105,7 +105,7 @@ def home():
     </style>
 </head>
 <body>
-    <h1>AI Image Generator</h1>
+    <h1>AI Slatelet Generator</h1>
     <form method="POST">
         <input name="prompt" placeholder="Describe an image..." required />
         <button type="submit">Generate Image</button>
