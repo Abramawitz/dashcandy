@@ -4,27 +4,40 @@ import os
 
 app = Flask(__name__)
 
+# Load OpenAI client using environment variable
 client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
     image_url = ""
-    prompt = ""
+    user_input = ""
+    display_prompt = ""
 
     if request.method == 'POST':
-        prompt = request.form.get('prompt', 'A fantasy landscape')
+        user_input = request.form.get('prompt', 'A fantasy landscape')
+
+        # Inject brand-style prompt prefix
+        base_style = (
+            "A flat-color cartoon illustration. Use a maximum of 6 solid colors. "
+            "White background only. No gradients. Sharp, aliased edges. "
+            "High contrast. Resolution: 512x512 pixels. "
+        )
+
+        prompt = base_style + user_input
+        display_prompt = prompt  # For displaying on the page
+
         try:
             response = client.images.generate(
                 model="dall-e-3",
                 prompt=prompt,
-                size="1024x1024",
+                size="1024x1024",  # Required, but DALL·E 3 will generate based on model defaults
                 quality="standard",
                 n=1
             )
             image_url = response.data[0].url
         except Exception as e:
             image_url = ""
-            prompt = f"Error: {str(e)}"
+            display_prompt = f"Error: {str(e)}"
 
     return f'''
 <!DOCTYPE html>
@@ -79,6 +92,13 @@ def home():
             border-radius: 12px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }}
+        .prompt-display {{
+            max-width: 600px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+        }}
     </style>
 </head>
 <body>
@@ -87,7 +107,7 @@ def home():
         <input name="prompt" placeholder="Describe an image..." required />
         <button type="submit">Generate Image</button>
     </form>
-    <h3>{prompt}</h3>
+    <div class="prompt-display">{display_prompt}</div>
     {'<img src="' + image_url + '"/>' if image_url else ''}
 </body>
 </html>
