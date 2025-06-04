@@ -47,7 +47,7 @@ def home():
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>AI Image Generator</title>
+    <title>AI Slatelet Generator</title>
     <style>
         body {{
             margin: 0;
